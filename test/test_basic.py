@@ -1,13 +1,14 @@
-import sounddevice as sd
-import numpy as np
-from scipy.io.wavfile import write
+import time
+from recorder import AudioRecorder
 
-fs = 44100
-seconds = 3
+rec = AudioRecorder()
 
 print("Recording...")
-audio = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
-sd.wait()
+rec.start()
+time.sleep(5)
+wav_file = rec.stop()
 
-write("test.wav", fs, audio)
-print("Saved test.wav")
+print("Saved:", wav_file)
+
+mp3_file = rec.convert_to_mp3(wav_file)
+print("Converted:", mp3_file)
