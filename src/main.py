@@ -1,7 +1,14 @@
 import tkinter as tk
 from tkinter import messagebox
+
 from recorder import AudioRecorder
 from filters import apply_echo
+from utils import (
+    handle_start,
+    handle_stop,
+    handle_quit,
+    handle_filter_change
+)
 
 class RecorderApp:
     def __init__(self, root):
@@ -35,7 +42,7 @@ class RecorderApp:
             control_frame,
             text="Start",
             height=2,
-            command=self.start_recording
+            command=lambda: handle_start(self)
         )
         self.start_button.pack(fill="x", padx=5, pady=(10, 5))
 
@@ -45,7 +52,7 @@ class RecorderApp:
             text="Stop",
             height=2,
             state=tk.DISABLED,
-            command=self.stop_recording
+            command=lambda: handle_stop(self)
         )
         self.stop_button.pack(fill="x", padx=5, pady=(0, 10))
 
@@ -85,11 +92,11 @@ class RecorderApp:
         filter_label.pack(anchor="w", padx=10, pady=(10, 5))
 
         self.filter_var = tk.StringVar(value="None")
-        self.filter_var.trace_add("write", self.on_filter_selected)
+        self.filter_var.trace_add("write", lambda *_: handle_filter_change(self))
 
         self.filter_dropdown = tk.OptionMenu(
             filter_frame,
-            self.filter_var,
+            self.filter_var, # All filters follow
             "None",
             "Echo"
         )
@@ -103,7 +110,7 @@ class RecorderApp:
             self.root,
             text="Quit",
             height=2,
-            command=self.root.quit
+            command=lambda: handle_quit(self)
         )
         quit_button.grid(
             row=2,
@@ -115,67 +122,32 @@ class RecorderApp:
         )
 
     
-    # Button handlers
+    # Filter helper
     ###########################
-    def start_recording(self):
-        try:
-            self.recorder.start()
-            self.status_label.config(text="Status: Recording...", fg="red")
-            self.start_button.config(state=tk.DISABLED)
-            self.stop_button.config(state=tk.NORMAL)
-            self.filter_dropdown.config(state=tk.DISABLED) 
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
-
-    def stop_recording(self):
-        try:
-            wav_path = self.recorder.stop()
-            mp3_path = self.recorder.convert_to_mp3(wav_path)
-            self.filter_dropdown.config(state=tk.NORMAL)
-            
-            self.last_wav = wav_path
-
-            self.status_label.config(
-                text="Status: Saved recording",
-                fg="green"
-            )
-
-            self.start_button.config(state=tk.NORMAL)
-            self.stop_button.config(state=tk.DISABLED)
-
-            messagebox.showinfo(
-                "Recording Saved",
-                f"Saved as:\n{mp3_path}"
-            )
-
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
-        
     def apply_echo_filter(self):
         try:
-            output = self.last_wav.replace(".wav", "_echo.wav")
-            apply_echo(self.last_wav, output)
+            if not self.recording_path:
+                messagebox.showwarning(
+                    "No Recording",
+                    "Record audio before applying a filter."
+                )
+                return
+
+            output = self.recording_path.replace(".wav", "_echo.wav")
+            apply_echo(self.recording_path, output)
             self.recorder.convert_to_mp3(output)
 
             messagebox.showinfo(
                 "Echo Applied",
                 "Echo effect applied successfully."
             )
+
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-    # reverb to do in future (time constraints)
-    '''
-    def apply_reverb_filter(self):
-    '''
-    def on_filter_selected(self, *_):
-        selected = self.filter_var.get()
-
-        if selected == "Echo":
-            self.apply_echo_filter()
-        else:
-            self.remove_filters()
-
+    def remove_filters(self):
+        # Placeholder for future filter reset logic
+        pass
 
 
 def main():
