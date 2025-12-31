@@ -1,5 +1,5 @@
 # Obvious Recorder
-## Video Demo: <PUT YOUR VIDEO URL HERE-
+## Video Demo: https://www.youtube.com/watch?v=PMktJKsaG7k
 ### Description:
 
 Obvious Recorder is a desktop audio recording application that was built with Python for my CS50 Final Project. The goal of the project was to design and implement a light weight, functional, easy to use recorder. It uses real-world tooling, and event-driven programming concepts such as in the CS50 course. The application allows people to record audio from their microphone, save those recordings to disk and then apply an audio filter in a post-processing manner with the use of FFmpeg, with the use of the simple graphical interface that was built with Tkinter.
