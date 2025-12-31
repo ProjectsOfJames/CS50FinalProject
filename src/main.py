@@ -56,7 +56,7 @@ class RecorderApp:
         )
         self.stop_button.pack(fill="x", padx=5, pady=(0, 10))
 
-        # Top Right
+        #       Top Right
         ###########################
         title_frame = tk.Frame(self.root, bd=2, relief="solid")
         title_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
@@ -69,7 +69,7 @@ class RecorderApp:
         )
         title_label.pack(expand=True)
 
-        # Middle Left
+        #       Middle Left
         ###########################
         status_frame = tk.Frame(self.root, bd=2, relief="solid")
         status_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
@@ -82,7 +82,7 @@ class RecorderApp:
         )
         self.status_label.pack(fill="both", padx=10, pady=10)
 
-        # Middle Right
+        #       Middle Right
         ###########################
         filter_frame = tk.Frame(self.root, bd=2, relief="solid")
         filter_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
@@ -102,7 +102,7 @@ class RecorderApp:
         )
         self.filter_dropdown.pack(fill="x", padx=10, pady=(0, 10))
 
-        # Bottom
+        #       Bottom
         ###########################
 
         # Quit
