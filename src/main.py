@@ -40,7 +40,7 @@ class RecorderApp:
         # Start waveform update loop
         self.root.after(50, self.update_plot)
 
-    ###########################
+
     # UI BUILD
     ###########################
     def _build_ui(self):
@@ -109,7 +109,7 @@ class RecorderApp:
         self.info_label = tk.Label(bottom_frame, text="Ready", anchor="w")
         self.info_label.pack(fill="x")
 
-    ###########################
+
     # RECORDING
     ###########################
     def start_recording(self):
@@ -163,7 +163,6 @@ class RecorderApp:
         )
 
 
-    ###########################
     # PLOT UPDATE
     ###########################
     def update_plot(self):
@@ -174,7 +173,7 @@ class RecorderApp:
 
         self.root.after(30, self.update_plot)
 
-    ###########################
+
     # PLAYBACK
     ###########################
     def play_audio(self):
@@ -194,7 +193,7 @@ class RecorderApp:
         sd.stop()
         self.stop_play_button.config(state="disabled")
 
-    ###########################
+    
     # FILE HANDLERS
     ###########################
     def save_file(self):
@@ -276,7 +275,6 @@ class RecorderApp:
         self.save_button.config(state="normal")
 
 
-    ###########################
     # FILTER
     ###########################
     def apply_filter(self):

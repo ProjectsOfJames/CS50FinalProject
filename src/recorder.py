@@ -20,16 +20,16 @@ class AudioRecorder:
         self.audio_chunks = []      # full recording
         self.live_chunk = None      # latest chunk for waveform
 
-    # ---------------------------
+    
     # Device selection
-    # ---------------------------
+    ###########################
     def set_device(self, device_index, loopback=False):
         self.device_index = device_index
         self.loopback = loopback
 
-    # ---------------------------
+    
     # Sounddevice callback
-    # ---------------------------
+    ###########################
     def _callback(self, indata, frames, time, status):
         if status:
             print(status)
@@ -42,9 +42,9 @@ class AudioRecorder:
         self.audio_chunks.append(chunk)
         self.live_chunk = chunk
 
-    # ---------------------------
+    
     # Start recording
-    # ---------------------------
+    ###########################
     def start(self):
         if self.recording:
             return
@@ -67,9 +67,9 @@ class AudioRecorder:
         )
         self.stream.start()
 
-    # ---------------------------
+    
     # Stop recording
-    # ---------------------------
+    ###########################
     def stop(self):
         if not self.recording:
             return None
@@ -85,15 +85,15 @@ class AudioRecorder:
         audio = np.concatenate(self.audio_chunks, axis=0)
         return audio
 
-    # ---------------------------
+    
     # Get latest audio chunk (for waveform)
-    # ---------------------------
+    ###########################
     def get_live_chunk(self):
         return self.live_chunk
 
-    # ---------------------------
+    
     # Save audio
-    # ---------------------------
+    ###########################
     def save(self, audio, codec="wav", output_dir="recordings"):
         os.makedirs(output_dir, exist_ok=True)
         filename = self._generate_filename(codec)
@@ -112,9 +112,9 @@ class AudioRecorder:
 
         raise ValueError("Unsupported codec")
 
-    # ---------------------------
+    
     # WAV helper
-    # ---------------------------
+    ###########################
     def _save_wav(self, filepath, audio):
         audio = np.clip(audio, -1.0, 1.0)
         audio_int16 = (audio * 32767).astype(np.int16)
@@ -125,9 +125,9 @@ class AudioRecorder:
             wf.setframerate(self.samplerate)
             wf.writeframes(audio_int16.tobytes())
 
-    # ---------------------------
+    
     # MP3 helper
-    # ---------------------------
+    ###########################
     def _convert_to_mp3(self, wav_path, mp3_path):
         subprocess.run(
             ["ffmpeg", "-y", "-i", wav_path, mp3_path],
@@ -135,9 +135,9 @@ class AudioRecorder:
             stderr=subprocess.DEVNULL
         )
 
-    # ---------------------------
+
     # Filename helper
-    # ---------------------------
+    ###########################
     def _generate_filename(self, ext):
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"recording_{ts}.{ext}"
