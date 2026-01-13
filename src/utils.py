@@ -1,4 +1,34 @@
-import subprocess
+# utils.py
+import sounddevice as sd
+from tkinter import filedialog
+
+def list_input_devices(windows_only=False):
+    """
+    Returns a list of input devices.
+    On Windows, optionally add 'Desktop Audio (loopback)' if WASAPI is available.
+    Format: "index: name"
+    """
+    devices = []
+    all_devices = sd.query_devices()
+    for idx, dev in enumerate(all_devices):
+        if dev['max_input_channels'] > 0:
+            devices.append(f"{idx}: {dev['name']}")
+
+    # Add desktop audio option on Windows using WASAPI
+    if windows_only:
+        for idx, dev in enumerate(all_devices):
+            if dev['hostapi'] == sd.query_hostapis().index(next(h for h in sd.query_hostapis() if h['name'] == 'Windows WASAPI')):
+                if dev['max_input_channels'] > 0 and "(loopback)" in dev['name']:
+                    devices.append(f"{idx}: {dev['name']} (Desktop Audio)")
+
+    return devices
+
+def select_audio_file():
+    path = filedialog.askopenfilename(
+        filetypes=[("Audio Files", "*.wav *.mp3")]
+    )
+    return path
+
 
 
 def check_ffmpeg():

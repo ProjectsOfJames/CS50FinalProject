@@ -41,7 +41,7 @@ Module that acts as the control layer between the GUI and core logic. This conta
     #All currently know limitations are due to time constraints
 
 - Want to add additional filters
-- Allow the user to , display recording duration in real time, or allow the user to select an input device.
-- Avoid making duplicate recording files by allowing user to choose output formats before recording (now each recording has a .wav and .mp3 file, and each filter makes 2 more files in each format)
-- Display recording duration
-- Select input device to record
+- Better trim functionality with a visual display of start and end
+
+### Curent Planning
+- Currently no future planning
